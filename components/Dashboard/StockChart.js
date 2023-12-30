@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Picker } from 'react-native';
+import { View, Text, Picker, StyleSheet, Dimensions } from 'react-native';
 import { useTheme } from '../ThemeContext';
 import { LineChart } from 'react-native-chart-kit';
 import Loader from './Loader';
@@ -7,11 +7,11 @@ import stockService from '../../services/stockService';
 import { useRoute } from '@react-navigation/native';
 
 const StockChart = () => {
-    const route = useRoute();
-    const symbol = route.params?.symbol;
+  const route = useRoute();
+  const symbol = route.params?.symbol;
   const { themeStyles } = useTheme();
   const [dates, setDates] = useState([]);
-  const [selectedParam, setSelectedParam] = useState('Net Income'); 
+  const [selectedParam, setSelectedParam] = useState('Net Income');
   const [chartData, setChartData] = useState([]);
   const [stockData, setStockData] = useState();
 
@@ -25,11 +25,11 @@ const StockChart = () => {
       console.error(`Error fetching stock chart data for ${symbol}:`, error);
     }
   };
-  
+
   useEffect(() => {
     fetchStockData();
   }, []);
-  
+
   useEffect(() => {
     const fetchDataFromApi = async () => {
       try {
@@ -38,28 +38,27 @@ const StockChart = () => {
           case 'Net Income':
             data = await stockService.getStockCashFlow(symbol);
             console.log('Fetched Net Income data:', data);
-            setChartData(data.map(entry => entry.netIncome));
+            setChartData(data.map((entry) => entry.netIncome));
             break;
           case 'Cash Flow':
             data = await stockService.getStockCashFlow(symbol);
             console.log('Fetched Cash Flow data:', data);
-            setChartData(data.map(entry => entry.cashFlow));
+            setChartData(data.map((entry) => entry.cashFlow));
             break;
           // Add cases for other parameters
           default:
             break;
         }
         if (data) {
-          setDates(data.map(entry => entry.fiscalDate));
+          setDates(data.map((entry) => entry.fiscalDate));
         }
       } catch (error) {
         console.error(`Error fetching ${selectedParam} data:`, error);
       }
     };
-  
+
     fetchDataFromApi();
   }, [symbol, selectedParam]);
-  
 
   if (!stockData) {
     return <Loader />;
@@ -78,7 +77,6 @@ const StockChart = () => {
           >
             <Picker.Item label="Net Income" value="Net Income" />
             <Picker.Item label="Cash Flow" value="Cash Flow" />
-            
           </Picker>
           {dates.length === 0 ? (
             <Text>--- no data found for graphical visuals ---</Text>
@@ -86,9 +84,9 @@ const StockChart = () => {
             <LineChart
               data={{
                 labels: dates,
-                datasets: [{ data: chartData }]
-              }}n 
-              width={300}
+                datasets: [{ data: chartData }],
+              }}
+              width={Dimensions.get('window').width - 40}
               height={200}
               yAxisLabel="$"
               chartConfig={{
@@ -96,10 +94,11 @@ const StockChart = () => {
                 backgroundGradientTo: 'white',
                 color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: { borderRadius: 16 }
+                style: { borderRadius: 16 },
               }}
               bezier
               style={{ marginVertical: 8, borderRadius: 16 }}
+              withVerticalLines={false} 
             />
           )}
         </View>
@@ -108,7 +107,7 @@ const StockChart = () => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   chartEntire: {
     flex: 1,
     backgroundColor: '#ffffff',
@@ -140,6 +139,6 @@ const styles = {
     fontSize: 16,
     maxWidth: 200,
   },
-};
+});
 
 export default StockChart;

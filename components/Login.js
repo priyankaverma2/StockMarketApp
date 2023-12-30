@@ -11,7 +11,7 @@ const Login = ({ onLogin }) => {
   const { themeStyles } = useTheme();
 
   const handleLogin = () => {
-    if (username === 'a' && password === 'a') {
+    if (username === 'priyanka' && password === 'priyanka') {
       onLogin();
       navigation.navigate('Dashboard');
     } else {

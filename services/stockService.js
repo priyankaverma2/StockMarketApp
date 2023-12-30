@@ -1,5 +1,6 @@
-const API_KEY = 'pk_fff3c5403d6742bfb249dbf6295d5fa7'; // Replace with API key
-
+// const API_KEY = 'pk_fff3c5403d6742bfb249dbf6295d5fa7'; // Replace with API key
+import { API_KEY } from '@env';
+console.log(API_KEY);
 const getStockSymbols = async () => {
   try {
     const response = await fetch(`https://cloud.iexapis.com/stable/ref-data/symbols?token=${API_KEY}`);

@@ -1,61 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { useTheme } from './ThemeContext';
-import { IoIosNotificationsOutline } from 'react-icons/io';
 import { MdWbSunny, MdOutlineWbSunny } from 'react-icons/md';
 import NotificationsDialog from './Dashboard/NotificationsDialog';
 
 const Header = ({ isLoggedIn, onLogout }) => {
   const { isDarkTheme, toggleTheme } = useTheme();
-  const [showNotifications, setShowNotifications] = useState(false);
-
-  const handleNotificationClick = () => {
-    setShowNotifications(!showNotifications);
-  };
 
   return (
     <View style={styles.header}>
+      <View style={styles.logoContainer}>
+        <Text style={styles.logo}>Stocks</Text>
+      </View>
       <View style={styles.nav}>
-        <Text style={styles.h3}>Stocks</Text>
-        <View style={styles.navItems}>
-          {isLoggedIn ? (
-            <>
-              <TouchableOpacity>
-                <Link to="/Dashboard"><Text style={styles.h3}>Home</Text></Link>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Link to="/FavoritesList"><Text style={styles.h3}>Saved</Text></Link>
-              </TouchableOpacity>
-              {/* <TouchableOpacity onPress={handleNotificationClick}>
-                <View style={styles.notificationIcon}>
-                <Text>bell</Text>
-                 
-                  {showNotifications && <NotificationsDialog />}
-                </View>
-              </TouchableOpacity> */}
-              {/* <TouchableOpacity onPress={toggleTheme}>
-                <Button >
-                  {isDarkTheme ? 'Dark' : 'light'}
-                </Button>
-              </TouchableOpacity> */}
-              <TouchableOpacity>
-                <Button onPress={onLogout}>Logout</Button>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              {/* <TouchableOpacity>
-                <Button onPress={toggleTheme}>
-                  {isDarkTheme ? 'Dark' : 'light'}
-                </Button>
-              </TouchableOpacity> */}
-              {/* <TouchableOpacity>
-                <Link to="/Register"><Text style={styles.h3}>SignUp</Text></Link>
-              </TouchableOpacity> */}
-            </>
-          )}
-        </View>
+        {isLoggedIn ? (
+          <>
+            <TouchableOpacity style={styles.navLink}>
+              <Link to="/Dashboard" style={styles.linkText}>
+                Home
+              </Link>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.navLink}>
+              <Link to="/FavoritesList" style={styles.linkText}>
+                Saved
+              </Link>
+            </TouchableOpacity>
+         
+            <TouchableOpacity style={styles.navLink}>
+              <Button onPress={onLogout}>Logout</Button>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+          
+            <TouchableOpacity style={styles.navLink}>
+              <Link to="/Register" style={styles.linkText}>
+                SignUp
+              </Link>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );
@@ -71,30 +56,41 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#333',
     padding: 10,
-    textAlign: 'center',
     width: '100%',
     height: 70,
-    color: 'white',
-  },
-  nav: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    maxWidth: 1200,
-    margin: 'auto',
   },
-  h3: {
-    color: 'white',
-    marginTop: 15,
-  },
-  navItems: {
-    color: 'white',
-    flexDirection: 'row',
-  },
-  notificationIcon: {
-    color: 'white',
+  logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  logo: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  nav: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  navLink: {
+    marginHorizontal: 10,
+  },
+  linkText: {
+    color: 'white',
+    fontSize: 16,
+    textDecorationLine: 'none',
+  },
+  notificationIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: 'white',
+  },
+  themeToggle: {
+    color: 'white',
+    fontSize: 20,
   },
   button: {
     backgroundColor: '#d9534f',
@@ -103,7 +99,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     cursor: 'pointer',
     marginTop: -5,
-    marginHorizontal: 10,
     transition: 'background-color 0.3s ease',
   },
   buttonText: {

@@ -51,7 +51,7 @@ const Favorites = ({ symbol, onDelete }) => {
 
 const styles = StyleSheet.create({
   stockCard: {
-    border: 1,
+    borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
     padding: 10,
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   stockLink: {
+    flex: 1,
     padding: 10,
-    textDecorationLine: 'none',
   },
   stockButtons: {
     flexDirection: 'row',
@@ -85,5 +85,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 });
+
 
 export default Favorites;
